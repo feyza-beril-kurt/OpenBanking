@@ -1,0 +1,146 @@
+CREATIONAL PATTERNS 
+*Factory Method -> Alt sınıfların nesne oluşturma sürecini belirleyen bir yöntemdir.
+*Singleton -> Tek bir örneği olan sınıf oluşturmayı sağlar.
+Abstract Factory -> İlgili nesnelerin ailesini yaratmayı sağlayan arayüz tanımlar.
+Builder -> Karmaşık nesnelerin adım adım oluşturulmasını sağlar.
+Prototype -> Varolan bir nesneyi klonlamayı sağlar.
+
+STRUCTURAL PATTERNS  
+*Adapter -> İki arayüzü birbirine bağlamayı sağlar.
+*Decorator ->Bir nesneye dinamik olarak ek işlevsellik eklemeyi sağlar.
+Proxy -> Başka bir nesneye erişimi kontrol eden bir aracı sağlar.
+Bridge -> Soyutlamayı uygulamadan ayırarak arayüzü gerçekleştirmeyi sağlar. 
+*Facade -> Alt sistemlerin karmaşıklığını gizleyen tek bir arayüz sağlar.
+
+
+BEHAVİORAL PATTERNS 
+*Observer -> Nesneler arasında birçok-tek ilişkisi kurmayı sağlar.
+*Strategy -> Algoritmaları değiştirilebilir bir şekilde tanımlamayı sağlar.
+Iterator -> Bir koleksiyon üzerinde dolaşmak için bir arayüz sağlar.
+Template Method -> Bir algoritmanın iskeletini tanımlar
+Command -> Bir isteği bir nesne olarak paketleyerek parametre ve sıralama yeteneği sağlar.
+
+DİĞER PATTERNS 
+*Composite -> Nesneleri hiyearşik bir yapıda işlemek için kullanılır.
+Chain of Responsibility -> Bir isteği işleyebilcek bir dizi nesneyi bağlar.
+State -> Bir nesnenin durumunun değişmesi durumunda davranışını değiştirmesini sağlar.
+Visitor -> Bir nesne koleksiyonu üzerinde işlem yapmayı sağlar.
+
+Bu patternler, belirli yazılım tasarım problemini çözmek için geniş bir araç seti sunar.
+Her pattern belirli problem alanına odaklanır ve uygun durumda kullanıldığında yazılımın esnek ve sürdürülebilir olmasını sağlar.
+
+
+SINGLETON (Kaynakların etkin kullanılmasını ve kodun temiz olmasını sağlar.)
+---------
+Bir sınıfın yalnızca bir kez oluşturulmasını ve bu örneğin tüm uygulama boyunca paylaşılmasını sağlar.
+*Sınıfın dışarıdan erişilmesini engellemek için private yapılandırıcı kullanılır.
+*Sınıfın kendisinden statik örneği bulunur.
+IDE (Yazılım geliştirme için kullanılan araçların genel adı) Herhangi bir ide'de çalışabilir.(VStudio-C#)
+! Veritabanı Bağlantısı: Uygulama boyunca tek bir veritabanı kullanılır ve kaynak kullanımı azalır.
+!Loglama: Kullanıcı otorum bilgilerinin tek bir noktadan yönetilmesi için kullanılabilir.
+!Ayarlar ve Yapılandırma: Bilgilere tek bir yerden erişmek için kullanılabilir.
+
+FACTORY METHOD 
+--------------
+Bir üst sınıf içinde bir method tanımlanır ve alt sınıflar bu metodu implement ederek farklı nesnelerin kullanılmasını sağlar.
+Oluşturulan nesnelerin ortak bir interface veya sınıfını temsil eder. (Visual studio - c#)
+*Farklı tipteki nesnelerin (farklı tipteki HTTP istemcileri veya veritabanı bağlantıları) yönetiminde kullanılır.
+! Kod tekrarını azaltır ve bakımı kolaylaştırır.
+! Nesnelerin türleri farklılık gösterdiğinde ve bu farklılığı yönetmek gerektiğinde kullanılır.
+
+DEPENDENCY INJECTION (Büyük ve karmaşık olayların yönetimini kolaylaştırır.)
+-------------------
+*Bir sınıfın başka bir sınıfa ihtiyaç duyduğu bağımlılıkları tanımlarız.(veritabanı bağlantısı veya servis sağlayıcısı)
+! Büyük web uygulamalarında, servislerin yönetimi ve farklı bileşenler arasındaki bileşenelerin sağlanması
+! Test yazılımı ve birim testlerde mock nesnelerinin enjekte edilmesi ile kodun test edilebilirliğini artırır.
+! Farklı modüllerin ve bileşenlerin bir araya getirilmesi ve genişletilmesidir. (VİSUAL STUDİO - C#)
+
+
+
+
+CSS
+---
+
+Bir elementin satırı tamamen kaplamasına block diyoruz. Block'u inline çevirebiliriz. Bu sayede gerekli yeri kaplar sadece.
+classlarda . kullanılarak yazılır. Text-align = yazının nerede durcağını belirtir.
+<nav> : web sayfasındaki menü ve ve bağlantılar gibi gezinmeyi kolaylaştıran ögeleri belirler.
+seçiciler ???
+icon eklemek için font-awesome sitesinden bağlantı eklemeliyiz.
+Link özellikleri var : active hover visited vb. bunlar ile link özellikleri anlaşılabilir. Örneğin ilk hali, tıklanıldıktan sonraki hali 
+a:link a:hover 
+Link ilk hali 
+hover üzerine geldiğindeki hali 
+active linke tıklanıldığında 
+visited site ziyaret edildikten sonra 
+a:visited 
+<table id ="customer"> diyerek tablo kolon adına isim verebiliriz.
+
+z-index:Bir öğenin diğer öğelerin üzerinde veya altında ne kadar yer alacağını belirler. 1 dersek üstünde -1 dersek altında kalmasını sağlıyoruz.
+overflow : 
+Taşma olduğunda düzeltmeyi sağlar.
+
+Navigation Bar: 
+Dropdown Menu : açılır kapanır menü oluşumu (aşağı doğru liste şeklinde açılır menü)
+----------------
+
+***JAVASCRIPT (FRONT END - BACK END / MOBİL UYGULAMA )
+----------
+Java script kütüphanesi react -> arayüz geliştirmek için kullanılır.
+Java script kütüphanesi node.js -> back-end geliştirmek için kullanılır.
+HTML sayfasında <script> tag açıldığında js kodları yazılabilir.(body içerisinde body bitişinden önce kullanılır.)
+Js'de çıktı almak için kullanılanlar :
+-document.write("hello");   çıktı verilmesini sağlar.
+-console.log("hello")
+alert ile uyarı mesajı verilebilir.       alert(); [; kullanmasak da çalışır.]
+console.log(location.port); // portu öğrenmek için ekranda çıktısını almak için kullanılır.
+
+var ile değişkenler tanımlanabilir. var degiskenismi =10;
+function method da tanımlanan değişkenlere sadece bu kısımda erişilebilir.Dışarıda görünmez.
+
+66 da kaldım.
+
+
+
+
+
+
+
+
+
+
+
+
+blog giriş makale görüntüleme yazma listeleme de düzenleme makale arama butonu kullancıcı profili
+makale adı ve yazar adı ile arama yapılabilsin.  makale içeriğine göre arama 
+başlık içerik yazar adı 
+
+
+hazır bir tema bul ve bunu html css js ile değiştirebilirin düzenle.
+bir giriş ekranı olacak(.net framework authentication framework)
+veritabanı tasarımı oluşturulacak.
+Blog oluşturma ekranı listeleme ve düzenleme 
+mvc mimarisi kullanılacak.
+arama butonu olacak.
+kaydetme işlemleri yapabilsin.
+
+
+https://www.udemy.com/course/net5aspnetcore5blog/#overview
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
