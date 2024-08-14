@@ -1,6 +1,7 @@
 package com.example.akbank
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.akbank.databinding.FragmentNewBankBinding
 import com.example.akbank.databinding.OtherBanksFragmentBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class NewBankFragment : Fragment() {
 
@@ -20,6 +23,7 @@ class NewBankFragment : Fragment() {
     private lateinit var newArrayList: ArrayList<News>
     lateinit var imageId: Array<Int>
     lateinit var heading: Array<String>
+    val db = Firebase.firestore
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +43,15 @@ class NewBankFragment : Fragment() {
             "Denizbank",
             "Pokus"
         )
+        db.collection("Banks").get().addOnSuccessListener { result->
+            for (document in result) {
+                Log.d("FIERSTOREDATA", document.data.get("imageUrl").toString())
+                Log.d("FIERSTOREDATA", document.data.get("title").toString())
+
+            }
+        }.addOnFailureListener { exception ->
+            Toast.makeText(requireContext(),exception.localizedMessage,Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun getUserData() {
