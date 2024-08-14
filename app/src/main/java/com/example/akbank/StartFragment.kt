@@ -6,13 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.example.akbank.databinding.FragmentFirstBinding
-import com.google.firebase.auth.FirebaseAuth
+import com.example.akbank.databinding.StartFragmentBinding
 
-class firstFragment : Fragment() {
+class StartFragment : Fragment() {
 
 
-    private var _binding:FragmentFirstBinding?=null
+    private var _binding:StartFragmentBinding?=null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -20,7 +19,7 @@ class firstFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        _binding=FragmentFirstBinding.inflate(inflater,container,false)
+        _binding=StartFragmentBinding.inflate(inflater,container,false)
 
         binding.button2.setOnClickListener {
             findNavController().navigate(R.id.action_firstFragment_to_secondFragment)

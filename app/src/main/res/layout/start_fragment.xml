@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".firstFragment">
+    tools:context=".StartFragment">
 
 
     <TextView
@@ -47,7 +47,7 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/ic_launcher_button"
         android:text="AKBANKLI OLMAK İSTİYORUM"
-        android:textColor="#B22222"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/button2"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/button2"
