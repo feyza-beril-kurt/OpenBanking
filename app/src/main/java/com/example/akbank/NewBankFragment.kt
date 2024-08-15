@@ -12,10 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.akbank.databinding.FragmentNewBankBinding
 import com.example.akbank.databinding.OtherBanksFragmentBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class NewBankFragment : Fragment() {
+class NewBankFragment : Fragment(), NewBankClickListener {
 
     private var _binding: FragmentNewBankBinding? = null
     private val binding get() = _binding!!
@@ -29,39 +30,24 @@ class NewBankFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        imageId = arrayOf(
-            R.drawable.img_6,
-            R.drawable.img_5,
-            R.drawable.img_7,
-            R.drawable.denizbank,
-            R.drawable.img_8
-        )
-        heading = arrayOf(
-            "QNB Finansbank",
-            "TEB Türkiye Finans Bankası",
-            "Türkiye İş Bankası",
-            "Denizbank",
-            "Pokus"
-        )
         db.collection("Banks").get().addOnSuccessListener { result->
-            for (document in result) {
-                Log.d("FIERSTOREDATA", document.data.get("imageUrl").toString())
-                Log.d("FIERSTOREDATA", document.data.get("title").toString())
+            val bankList = arrayListOf<Banks>()
 
+            for (document in result) {
+                val banks = Banks(
+                    (document.data.get("id") as Long).toInt(),
+                    document.data.get("imageUrl") as String,
+                    document.data.get("title") as String
+                )
+                bankList.add(banks)
             }
+
+            binding.recyclerView.adapter=NewBankAdapter(bankList, this)
         }.addOnFailureListener { exception ->
             Toast.makeText(requireContext(),exception.localizedMessage,Toast.LENGTH_LONG).show()
         }
     }
 
-    private fun getUserData() {
-        newArrayList= arrayListOf<News>()
-        for (i in imageId.indices){
-            val news=News(imageId[i],heading[i])
-            newArrayList.add(news)
-        }
-        binding.recyclerView.adapter=MyAdapter(newArrayList)
-    }
 
 
     override fun onCreateView(
@@ -81,7 +67,24 @@ class NewBankFragment : Fragment() {
         binding.imageView5.setOnClickListener{
             findNavController().popBackStack()
         }
-
-        getUserData()
     }
+
+    data class BankList(
+        val bankList: List<Banks>
+    )
+
+    override fun onBankClick(banks: Banks) {
+        val uid = Firebase.auth.currentUser?.uid
+        if (uid != null) {
+
+            db.collection("Accounts").document(uid)
+                .set(BankList(listOf(banks)))
+                .addOnSuccessListener {
+                    println("Veri başarıyla Firestore'a kaydedildi")
+                }
+        } else {
+            println("Kullanıcı giriş yapmadı")
+        }
+    }
+
 }
