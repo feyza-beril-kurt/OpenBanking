@@ -4,8 +4,6 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Banks(
-    val id: Int = 6,
-    val imageUrl: String = "",
-    val title: String = ""
+data class BankList(
+    val bankList: List<Banks> = emptyList()
 ) : Parcelable

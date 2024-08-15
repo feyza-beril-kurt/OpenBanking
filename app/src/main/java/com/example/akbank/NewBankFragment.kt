@@ -1,6 +1,7 @@
 package com.example.akbank
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,18 +9,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.akbank.databinding.FragmentNewBankBinding
 import com.example.akbank.databinding.OtherBanksFragmentBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.parcelize.Parcelize
 
 class NewBankFragment : Fragment(), NewBankClickListener {
 
     private var _binding: FragmentNewBankBinding? = null
     private val binding get() = _binding!!
+    val args :NewBankFragmentArgs by navArgs<NewBankFragmentArgs>()
 
     private lateinit var newArrayList: ArrayList<News>
     lateinit var imageId: Array<Int>
@@ -39,7 +44,9 @@ class NewBankFragment : Fragment(), NewBankClickListener {
                     document.data.get("imageUrl") as String,
                     document.data.get("title") as String
                 )
-                bankList.add(banks)
+                if (!args.bankList.bankList.contains(banks)) {
+                    bankList.add(banks)
+                }
             }
 
             binding.recyclerView.adapter=NewBankAdapter(bankList, this)
@@ -69,22 +76,32 @@ class NewBankFragment : Fragment(), NewBankClickListener {
         }
     }
 
-    data class BankList(
-        val bankList: List<Banks>
-    )
+
 
     override fun onBankClick(banks: Banks) {
-        val uid = Firebase.auth.currentUser?.uid
-        if (uid != null) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Açık Bankacılık")
+            .setMessage("Bu bankayı listenize eklemek istiyor musunuz?")
+            .setNegativeButton("Hayır") { dialog, which ->
+                // Respond to negative button press
+            }
+            .setPositiveButton("Evet") { dialog, which ->
+                val uid = Firebase.auth.currentUser?.uid
+                val bank = args.bankList.bankList.toMutableList()
 
-            db.collection("Accounts").document(uid)
-                .set(BankList(listOf(banks)))
-                .addOnSuccessListener {
-                    println("Veri başarıyla Firestore'a kaydedildi")
+                if (uid != null) {
+
+                    bank.add(banks)
+                    db.collection("Accounts").document(uid)
+                        .set(BankList(bank))
+                        .addOnSuccessListener {
+                            Toast.makeText(requireContext(), "Başarıyla Eklendi", Toast.LENGTH_LONG).show()
+                            findNavController().popBackStack()
+                        }
                 }
-        } else {
-            println("Kullanıcı giriş yapmadı")
-        }
+            }
+            .show()
+
     }
 
 }

@@ -12,7 +12,7 @@ import com.squareup.picasso.Picasso
 interface NewBankClickListener {
     fun onBankClick(banks: Banks)
 }
-class NewBankAdapter(private val newList: ArrayList<Banks>,private val newBankClickListener: NewBankClickListener) :
+class NewBankAdapter(private val newList: List<Banks>,private val newBankClickListener: NewBankClickListener) :
     RecyclerView.Adapter<NewBankAdapter.MyViewHolder>() {
 
 

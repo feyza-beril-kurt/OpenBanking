@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_firstFragment_to_secondFragment"
             app:destination="@id/secondFragment" />
+        <action
+            android:id="@+id/action_firstFragment_to_thirdFragment"
+            app:destination="@id/thirdFragment" />
     </fragment>
     <fragment
         android:id="@+id/secondFragment"
@@ -41,5 +44,9 @@
         android:id="@+id/newBankFragment"
         android:name="com.example.akbank.NewBankFragment"
         android:label="fragment_new_bank"
-        tools:layout="@layout/fragment_new_bank" />
+        tools:layout="@layout/fragment_new_bank" >
+        <argument
+            android:name="bankList"
+            app:argType="com.example.akbank.BankList" />
+    </fragment>
 </navigation>

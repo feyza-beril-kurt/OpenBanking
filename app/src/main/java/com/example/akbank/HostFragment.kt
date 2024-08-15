@@ -18,7 +18,7 @@ class HostFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = HostFragmentBinding.inflate(inflater, container, false)
-        replaceFragment(HomeFragment())
+        replaceFragment(OtherBanksFragment())
 
         binding.bottomnavigationview.setOnItemSelectedListener {
             when (it.itemId) {
@@ -44,6 +44,8 @@ class HostFragment : Fragment() {
             }
             true
         }
+
+        binding.bottomnavigationview.menu.findItem(R.id.otherBanks).setChecked(true)
 
         return binding.root
 

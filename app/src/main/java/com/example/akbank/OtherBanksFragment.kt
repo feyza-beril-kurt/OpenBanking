@@ -5,45 +5,28 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil.setContentView
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.akbank.databinding.HostFragmentBinding
 import com.example.akbank.databinding.OtherBanksFragmentBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.toObject
+import com.google.firebase.ktx.Firebase
 
-class OtherBanksFragment : Fragment() {
+class OtherBanksFragment : Fragment(), NewBankClickListener {
 
     private var _binding: OtherBanksFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var newArrayList: ArrayList<News>
-    lateinit var imageId:Array<Int>
-    lateinit var heading:Array<String>
+    private lateinit var bankList: BankList
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-            imageId= arrayOf(
-                R.drawable.img,
-                R.drawable.img_1,
-                R.drawable.img_9
-            )
-            heading= arrayOf(
-                "Ziraat Bankası",
-                "Garanti BBVA",
-                "Yapı Kredi Bankası"
-            )
-    }
-
-    private fun getUserData() {
-        for (i in imageId.indices){
-            val news=News(imageId[i],heading[i])
-            newArrayList.add(news)
-        }
-        binding.recyclerView.adapter=MyAdapter(newArrayList)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,11 +43,59 @@ class OtherBanksFragment : Fragment() {
         binding.recyclerView.layoutManager=LinearLayoutManager(requireContext())
         binding.recyclerView.setHasFixedSize(true)
 
-        newArrayList= arrayListOf<News>()
-        getUserData()
+        bankList = BankList()
+
+
+
 
         binding.fab.setOnClickListener {
-            findNavController().navigate(R.id.action_thirdFragment_to_newBankFragment)
+            val action  = HostFragmentDirections.actionThirdFragmentToNewBankFragment(bankList)
+            findNavController().navigate(action)
         }
+
+        getBanks()
+    }
+
+    private fun getBanks() {
+        binding.progressBar.isVisible=true
+        val uid = Firebase.auth.currentUser?.uid
+        Firebase.firestore.collection("Accounts").document(uid!!).get().addOnSuccessListener {
+            val banks = it.toObject<BankList>()
+            binding.progressBar.isVisible=false
+            banks?.let {
+                bankList = banks
+                binding.emptyTextView.isVisible=bankList.bankList.isEmpty()
+                binding.recyclerView.adapter=NewBankAdapter(banks.bankList, this)
+            } ?: kotlin.run {
+                binding.emptyTextView.isVisible=true
+            }
+        }
+
+
+    }
+
+    override fun onBankClick(banks: Banks) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Açık Bankacılık")
+            .setMessage("Bu bankayı kaldırmak istiyor musunuz?")
+            .setNegativeButton("Hayır") { dialog, which ->
+                // Respond to negative button press
+            }
+            .setPositiveButton("Evet") { dialog, which ->
+                val uid = Firebase.auth.currentUser?.uid
+                val bank = bankList.bankList.toMutableList()
+
+                if (uid != null) {
+
+                    bank.remove(banks)
+                    Firebase.firestore.collection("Accounts").document(uid)
+                        .set(BankList(bank))
+                        .addOnSuccessListener {
+                            getBanks()
+                            Toast.makeText(requireContext(), "Başarıyla Silindi.", Toast.LENGTH_LONG).show()
+                        }
+                }
+            }
+            .show()
     }
 }
